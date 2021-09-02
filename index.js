@@ -13,6 +13,11 @@ app.get("/api/courses", (req, res) => {
   res.send([1, 2, 3]);
 });
 
+//the (:id) section of the url is an implementation of a parameter
+app.get("/api/courses/:id", (req, res) => {
+  res.send(req.params.id);
+});
+
 //This is a proper way to assign a port to node applications. we can set the port in the
 //terminal by running command: export PORT=5000
 const port = process.env.PORT || 3000;
@@ -22,3 +27,6 @@ const port = process.env.PORT || 3000;
 //when deploying an operation to a hosting environment the port is dynamically
 //assigned by the hosting environment
 app.listen(port, () => console.log(`listening on port ${port}`));
+
+//* Query string parameters are used to provide additional data to our backend
+// services - optional data, this is signified by a ? followed by an argument
