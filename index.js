@@ -2,6 +2,8 @@ const express = require("express");
 //the express function creates an application we set that application to the value of app
 const app = express();
 
+app.use(express.json());
+
 /* Created an array with random value to use a a test for pulling data based on the 
 route params */
 const courses = [
@@ -19,6 +21,16 @@ app.get("/", (req, res) => {
 
 app.get("/api/courses", (req, res) => {
   res.send(courses);
+});
+
+app.post("/api/courses", (req, res) => {
+  const course = {
+    id: courses.length + 1,
+    name: req.body.name,
+  };
+
+  courses.push(course);
+  res.send(course);
 });
 
 /*the (:id) section of the url is an implementation of a parameter. Depending on the value 
