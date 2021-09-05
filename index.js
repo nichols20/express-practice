@@ -7,7 +7,7 @@ app.use(express.json());
 
 /* Created an array with random value to use a a test for pulling data based on the 
 route params */
-const courses = [
+let courses = [
   { id: 1, name: "course1" },
   { id: 2, name: "course2" },
   { id: 3, name: "course3" },
@@ -69,6 +69,20 @@ app.get("/api/courses/:id", (req, res) => {
   if (!course) return res.status(404).send("Course not Found");
 
   res.send(course);
+});
+
+app.delete("/api/courses/:id", (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+
+  if (!course) return res.status(404).send("Course has already been deleted");
+
+  const filteredCourses = courses.filter(
+    (c) => c.id !== parseInt(req.params.id)
+  );
+
+  courses = filteredCourses;
+
+  res.send(filteredCourses);
 });
 
 //This is a proper way to assign a port to node applications. we can set the port in the
