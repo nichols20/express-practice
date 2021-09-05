@@ -27,16 +27,10 @@ app.get("/api/courses", (req, res) => {
 /* Ran into a problem where Joi.validate() wasn't working that is because that function is now deprecated
 to validate a schema you create a schema that equals Joi.object({}) then validate it with schema.validate()*/
 app.post("/api/courses", (req, res) => {
-  const schema = Joi.object({
-    name: Joi.string().required().min(3),
-  });
+  const { error } = validateCourse(req.body);
 
-  //const result = Joi.Validate(req.body, schema);
-  const result = schema.validate(req.body);
-  console.log(result);
-
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  if (error) {
+    res.status(400).send(error.details[0].message);
   }
 
   const course = {
@@ -46,6 +40,19 @@ app.post("/api/courses", (req, res) => {
 
   courses.push(course);
   res.send(course);
+});
+
+app.put("/api/courses/:id", (req, res) => {
+  let course = courses.find((c) => c.id === parseInt(req.params.id));
+
+  if (!course) return res.status(404).send("Course Not Found");
+
+  const { error } = validateCourse(req.body);
+
+  if (error) return res.status(400).send(error.details[0].message);
+
+  course.name = req.body.name;
+  return res.send(course);
 });
 
 /*the (:id) section of the url is an implementation of a parameter. Depending on the value 
@@ -76,3 +83,13 @@ app.listen(port, () => console.log(`listening on port ${port}`));
 
 //* Query string parameters are used to provide additional data to our backend
 // services - optional data, this is signified by a ? followed by an argument
+
+//Creating a function to automate the validation of schema to avoid duplicating code
+
+function validateCourse(course) {
+  const schema = Joi.object({
+    name: Joi.string().required().min(3),
+  });
+
+  return schema.validate(course);
+}
