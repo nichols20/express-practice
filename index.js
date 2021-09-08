@@ -2,7 +2,11 @@ const Joi = require("joi");
 const express = require("express");
 //the express function creates an application we set that application to the value of app
 const app = express();
+const morgan = require("morgan");
+const helmet = require("helmet");
 
+app.use(helmet());
+app.use(morgan("tiny"));
 app.use(express.json());
 
 /* Created an array with random value to use a a test for pulling data based on the 
@@ -29,9 +33,7 @@ to validate a schema you create a schema that equals Joi.object({}) then validat
 app.post("/api/courses", (req, res) => {
   const { error } = validateCourse(req.body);
 
-  if (error) {
-    res.status(400).send(error.details[0].message);
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   const course = {
     id: courses.length + 1,
