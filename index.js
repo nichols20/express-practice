@@ -9,6 +9,11 @@ const helmet = require("helmet");
 app.use(helmet());
 app.use(express.json());
 
+//to return html markup to the client you would need to use a view engine. for this example I used pug
+//I called the set method and set the view engine to the template engine module we installed pug
+//this is essentially the replacement for the require method
+app.set("view engine", "pug");
+
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   startupDebugger("Morgan enabled");
@@ -36,7 +41,10 @@ let courses = [
 callback function. The callback function should have two arguments request(req) 
 and response(res) */
 app.get("/", (req, res) => {
-  res.send("hello world");
+  //the first argument for the render method is the name of the view. Which is index
+  //because that is what we named our .pug file index the second argument is an object
+  //which includes all the values for the paramteres we defined in our template
+  res.render("index", { title: "My express app", message: "hello" });
 });
 
 app.get("/api/courses", (req, res) => {
