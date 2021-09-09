@@ -1,0 +1,13 @@
+With the config npm package we are able to store configuration settings based on the
+environment stage. keywords development & production .json allow use to store complex
+objects that equal specific values we set. For example if I wanted the name of the 
+application to be set to one value in the development stage however change that once
+the app is ready to be put on production I can attribute those values in each individual
+file and the code will return the values set depending on whatever I set the environment
+stage to.
+
+
+*SENSITIVE DATA SHOULD NOT BE STORED IN THESE CONFIGURATION FILES EX. PASSWORD TO DATABASE
+OR PASSWORD TO MAIL SERVER ETC. DATA LIKE THAT SHOULD BE STORED IN ENVIRONMENT VARS
+THEN READ THEM IN A CONFIG FILE. IN THESE FILES WE ONLY ATTRIBUTE THE OBJECT NAMES
+NOT THE VALUES THEMSELVES SEE CUSTOM-ENVIRONMENT-VARIABLES.JSON FILE FOR EXAMPLE.

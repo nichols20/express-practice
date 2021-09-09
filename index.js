@@ -1,3 +1,4 @@
+const config = require("config");
 const Joi = require("joi");
 const express = require("express");
 //the express function creates an application we set that application to the value of app
@@ -9,13 +10,17 @@ app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.json());
 
+console.log("Application Name " + config.get("name"));
+console.log("mail server " + config.get("mail.host"));
+console.log("mail server " + config.get("mail.password"));
+
 //NODE_ENV represents the current environment stage of the application development or production.
 //This variable is undefined unless eplicitly set in the terminal using export
-console.log(process.env.NODE_ENV);
+//console.log(process.env.NODE_ENV);
 //When NODE_ENV is undefined using the app.get('env') method will always return development, however if it
 //is defined it will return whatever stage the object was set to
 //this environment variable allows us to activate or deactivate certain modules /npm depending on the current stage of the code
-console.log(app.get("env"));
+//console.log(app.get("env"));
 
 /* Created an array with random value to use a a test for pulling data based on the 
 route params */
