@@ -1,18 +1,20 @@
-const config = require("config");
-const Joi = require("joi");
-const express = require("express");
 //the express function creates an application we set that application to the value of app
+const express = require("express");
 const app = express();
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
+const Joi = require("joi");
 const morgan = require("morgan");
 const helmet = require("helmet");
-
 app.use(helmet());
-app.use(morgan("tiny"));
 app.use(express.json());
 
-console.log("Application Name " + config.get("name"));
-console.log("mail server " + config.get("mail.host"));
-console.log("mail server " + config.get("mail.password"));
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  startupDebugger("Morgan enabled");
+}
+
+dbDebugger("connected to the databse");
 
 //NODE_ENV represents the current environment stage of the application development or production.
 //This variable is undefined unless eplicitly set in the terminal using export
